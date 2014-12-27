@@ -1,0 +1,2 @@
+module LettureHelper
+end

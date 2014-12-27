@@ -1,0 +1,175 @@
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>	
+
+<div class="page-header">
+  <h1>Gestione prezzi enel</small></h1>
+</div>
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">Lista letture contatori ENEL</div>
+	<div class="panel-body">
+    <p>
+		<ul>
+		<li>Fascia 1 : Ore di punta (F1): dalle 8:00 alle 19:00 nei giorni dal lunedi al venerdi (escluse le festivit&agrave; nazionali)</li>
+		<li>Fascia 2 : dalle 19:00 alle 8:00 durante i giorni della settimana (escluse le festivit&agrave; nazionali)</li>
+		<li>Fascia 3 : Sabato Domenica e festivi</li>
+		<li>Tutti i valori espressi in kWh</li>
+		</ul>
+    </p>
+  </div>
+  <!-- Table -->
+  <table class="table">
+  <thead>
+  <tr>
+      <th>Data</th>
+      <th colspan=3 class=prelievienel >Prelievi da ENEL</th>
+      <th colspan=4 class=prelievienel>Delta Prelievi da ENEL</th>
+      <th colspan=3 class="produzione">Produzione impianto</th>
+      <th colspan=4 class="produzione">Delta produzione impianto</th>
+      <th colspan=3 class="immissioni">Immissioni su rete ENEL</th>
+      <th colspan=4 class="immissioni">Delta Immissioni su rete ENEL</th>
+      <th colspan=3 class="consumi"  >Consumi casa</th>
+    </tr>
+    <tr>
+      <th></th>
+      <th class=prelievienel>F1</th>
+      <th class=prelievienel>F2</th>
+      <th class=prelievienel>F3</th>
+      <th class=prelievienel>F1</th>
+      <th class=prelievienel>F2</th>
+      <th class=prelievienel>F3</th>
+      <th class=prelievienel>TOT</th>
+      
+      <th class="produzione">F1</th>
+      <th class="produzione">F2</th>
+      <th class="produzione">F3</th>
+      <th class="produzione">F1</th>
+      <th class="produzione">F2</th>
+      <th class="produzione">F3</th>
+       <th class=produzione>TOT</th>
+      
+      <th class="immissioni">F1</th>
+      <th class="immissioni">F2</th>
+      <th class="immissioni">F3</th>
+      <th class="immissioni">F1</th>
+      <th class="immissioni">F2</th>
+      <th class="immissioni">F3</th>
+      <th class="immissioni">TOT</th>
+      
+      <th class="consumi">Da fotovoltaico</th>
+      <th class="consumi">Totali</th>
+      <th class="consumi">%</th>
+    </tr>
+  </thead>
+
+  <tbody>
+  
+	<%
+		oldconsumofascia1=0
+		oldconsumofascia2=0
+		oldconsumofascia3=0
+		oldproduzionefascia1=0
+		oldproduzionefascia2=0
+		oldproduzionefascia3=0
+		oldimmissionefascia1=0
+		oldimmissionefascia2=0
+		oldimmissionefascia3=0
+     %>
+     
+     
+    
+	
+     <% @letture.each do |l| %>
+     
+     <%
+     
+		deltaconsumofascia1=l.consumofascia1-oldconsumofascia1
+		deltaconsumofascia2=l.consumofascia2-oldconsumofascia2
+		deltaconsumofascia3=l.consumofascia3-oldconsumofascia3
+		totaledeltaconsumo=deltaconsumofascia1+deltaconsumofascia2+deltaconsumofascia3
+		euroconsumofascia1=Float(Float(deltaconsumofascia1)*Float(l.prezzofascia1)).round(2)
+		euroconsumofascia2=Float(Float(deltaconsumofascia2)*Float(l.prezzofascia2)).round(2)
+		euroconsumofascia3=Float(Float(deltaconsumofascia3)*Float(l.prezzofascia3)).round(2)
+		
+		deltaproduzionefascia1=l.produzionefascia1-oldproduzionefascia1
+		deltaproduzionefascia2=l.produzionefascia2-oldproduzionefascia2
+		deltaproduzionefascia3=l.produzionefascia3-oldproduzionefascia3
+		totaledeltaproduzione=deltaproduzionefascia1+deltaproduzionefascia2+deltaproduzionefascia3
+		europroduzionefascia1=Float(Float(deltaproduzionefascia1)*Float(l.prezzofascia1)).round(2)
+		europroduzionefascia2=Float(Float(deltaproduzionefascia2)*Float(l.prezzofascia2)).round(2)
+		europroduzionefascia3=Float(Float(deltaproduzionefascia3)*Float(l.prezzofascia3)).round(2)
+		
+		deltaimmissionefascia1=l.immissionefascia1-oldimmissionefascia1
+		deltaimmissionefascia2=l.immissionefascia2-oldimmissionefascia2
+		deltaimmissionefascia3=l.immissionefascia3-oldimmissionefascia3
+		totaledeltaimmissione=deltaimmissionefascia1+deltaimmissionefascia2+deltaimmissionefascia3
+		euroimmissionefascia1=Float(Float(deltaimmissionefascia1)*Float(l.prezzofascia1)).round(2)
+		euroimmissionefascia2=Float(Float(deltaimmissionefascia2)*Float(l.prezzofascia2)).round(2)
+		euroimmissionefascia3=Float(Float(deltaimmissionefascia3)*Float(l.prezzofascia3)).round(2)
+		
+		consumicasadafotovoltaico=totaledeltaproduzione-totaledeltaimmissione
+		consumicasatotali=totaledeltaconsumo+(totaledeltaproduzione-totaledeltaimmissione)
+     %>
+     
+      <tr>
+        <td nowrap><%= l.data%></td>
+
+        <td class=prelievienel><%= l.consumofascia1 %></td>
+        <td class=prelievienel><%= l.consumofascia2 %></td>
+        <td class=prelievienel><%= l.consumofascia3 %></td>
+        <td class=prelievienel><%=  deltaconsumofascia1 %> <div class="euro">(<%= euroconsumofascia1 %>&euro;)</div> </td>
+        <td class=prelievienel><%=  deltaconsumofascia2 %> <div class="euro">(<%= euroconsumofascia2 %>&euro;)</div> </td>
+        <td class=prelievienel><%=  deltaconsumofascia3 %> <div class="euro">(<%= euroconsumofascia3 %>&euro;)</div> </td>
+        <td class="prelievienel totale"><%=  totaledeltaconsumo %> <div class="euro">(<%=euroconsumofascia1+euroconsumofascia2+euroconsumofascia3  %>&euro;)</div> </td>
+        
+        <td class="produzione"><%= l.produzionefascia1 %></td>
+        <td class="produzione"><%= l.produzionefascia2 %></td>
+        <td class="produzione"><%= l.produzionefascia3 %></td>
+        <td class="produzione"><%= deltaproduzionefascia1 %> <div class="euro">(<%= europroduzionefascia1 %>&euro;)</div> </td>
+        <td class="produzione"><%= deltaproduzionefascia2 %> <div class="euro">(<%= europroduzionefascia2 %>&euro;)</div></td>
+        <td class="produzione"><%= deltaproduzionefascia3 %> <div class="euro">(<%= europroduzionefascia3 %>&euro;)</div></td>
+        <td class="produzione totale"><%=  totaledeltaproduzione %> <div class="euro">(<%= europroduzionefascia1+europroduzionefascia2+europroduzionefascia3 %>&euro;)</div>  </td>
+        
+        <td class="immissioni"><%= l.immissionefascia1 %></td>
+        <td class="immissioni"><%= l.immissionefascia2 %></td>
+        <td class="immissioni"><%= l.immissionefascia3 %></td>
+        
+        <td class="immissioni"><%= deltaimmissionefascia1 %> <div class="euro">(<%= euroimmissionefascia1 %>&euro;)</div> </td>
+        <td class="immissioni"><%= deltaimmissionefascia2 %> <div class="euro">(<%= euroimmissionefascia2 %>&euro;)</div> </td>
+        <td class="immissioni"><%= deltaimmissionefascia3 %> <div class="euro">(<%= euroimmissionefascia3 %>&euro;)</div></td>
+        <td class="immissioni totale"><%=  totaledeltaimmissione %> <div class="euro">(<%= Float(euroimmissionefascia3+euroimmissionefascia1+euroimmissionefascia2).round(2) %>&euro;) </td>
+        
+        <td class="consumi"><%= consumicasadafotovoltaico  %></td>
+        <td class="consumi"><%= consumicasatotali %></td>
+        
+        <%
+			percentuale=Float(consumicasadafotovoltaico)/Float(consumicasatotali)*100
+        %>
+        <td class="consumi"><%= percentuale.round(2)  %></td>
+      </tr>
+      
+      <%
+		oldconsumofascia1=l.consumofascia1
+		oldconsumofascia2=l.consumofascia2
+		oldconsumofascia3=l.consumofascia3
+		
+		oldproduzionefascia1=l.produzionefascia1
+		oldproduzionefascia2=l.produzionefascia2
+		oldproduzionefascia3=l.produzionefascia3
+		
+		oldimmissionefascia1=l.immissionefascia1
+		oldimmissionefascia2=l.immissionefascia2
+		oldimmissionefascia3=l.immissionefascia3
+     %>
+    <% end %>
+  </tbody>
+</table>
+</div>
