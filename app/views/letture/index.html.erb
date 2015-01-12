@@ -136,7 +136,7 @@
         <td class="produzione"><%= deltaproduzionefascia1 %> <div class="euro">(<%= europroduzionefascia1 %>&euro;)</div> </td>
         <td class="produzione"><%= deltaproduzionefascia2 %> <div class="euro">(<%= europroduzionefascia2 %>&euro;)</div></td>
         <td class="produzione"><%= deltaproduzionefascia3 %> <div class="euro">(<%= europroduzionefascia3 %>&euro;)</div></td>
-        <td class="produzione totale"><%=  totaledeltaproduzione %> <div class="euro">(<%= europroduzionefascia1+europroduzionefascia2+europroduzionefascia3 %>&euro;)</div>  </td>
+        <td class="produzione totale"><%=  totaledeltaproduzione %> <div class="euro">(<%= Float(europroduzionefascia1+europroduzionefascia2+europroduzionefascia3).round(2) %>&euro;)</div>  </td>
         
         <td class="immissioni"><%= l.immissionefascia1 %></td>
         <td class="immissioni"><%= l.immissionefascia2 %></td>
