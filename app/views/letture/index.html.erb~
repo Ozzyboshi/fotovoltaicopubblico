@@ -9,7 +9,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>	
 
 <div class="page-header">
-  <h1>Letture contatori enel</small></h1>
+  <h1>Gestione prezzi enel</small></h1>
 </div>
 
 <div class="panel panel-default">
@@ -128,7 +128,7 @@
         <td class=prelievienel><%=  deltaconsumofascia1 %> <div class="euro">(<%= euroconsumofascia1 %>&euro;)</div> </td>
         <td class=prelievienel><%=  deltaconsumofascia2 %> <div class="euro">(<%= euroconsumofascia2 %>&euro;)</div> </td>
         <td class=prelievienel><%=  deltaconsumofascia3 %> <div class="euro">(<%= euroconsumofascia3 %>&euro;)</div> </td>
-        <td class="prelievienel totale"><%=  totaledeltaconsumo %> <div class="euro">(<%=Float(euroconsumofascia1+euroconsumofascia2+euroconsumofascia3).round(2)  %>&euro;)</div> </td>
+        <td class="prelievienel totale"><%=  totaledeltaconsumo %> <div class="euro">(<%=euroconsumofascia1+euroconsumofascia2+euroconsumofascia3  %>&euro;)</div> </td>
         
         <td class="produzione"><%= l.produzionefascia1 %></td>
         <td class="produzione"><%= l.produzionefascia2 %></td>
